@@ -5,9 +5,7 @@ import globalStyles from './styles/global';
 const App = () => (
   <>
     <Global styles={globalStyles} />
-    <Layout>
-      <div>dkdkdk</div>
-    </Layout>
+    <Layout />
   </>
 );
 
