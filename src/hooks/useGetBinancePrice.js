@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-const BinancePrice = () => {
+const useGetBinancePrice = () => {
   const [tickers, setTickers] = useState({});
   const scRef = useRef(null);
 
@@ -13,6 +13,7 @@ const BinancePrice = () => {
         }
       };
 
+      // USDT
       scRef.current.onmessage = (e) => {
         if (scRef.current.readyState === 1) {
           const {
@@ -51,7 +52,7 @@ const BinancePrice = () => {
     };
   }, []);
 
-  return <div>바이낸스 가격 : {tickers['BTCU']?.tradePrice}</div>;
+  return tickers;
 };
 
-export default BinancePrice;
+export default useGetBinancePrice;

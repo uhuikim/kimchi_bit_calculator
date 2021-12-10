@@ -1,15 +1,17 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import UpbitPrice from './UpbitPrice';
-import BinancePrice from './BinancePrice';
-import Dollar from './Dollar';
+
+import Header from './Header';
+import PriceArea from './PriceArea';
+import Calculator from './Calculator';
 
 const Layout = ({ children }) => {
   return (
     <Wrapped>
-      <UpbitPrice />
-      <BinancePrice />
-      <Dollar />
+      <Header />
+      <PriceArea />
+      <Calculator />
+
       {children}
     </Wrapped>
   );

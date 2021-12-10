@@ -1,14 +1,9 @@
 import { css } from '@emotion/react';
 
-import { palette } from './variables';
-
 export default css`
   svg {
     min-width: 2.3rem;
     min-height: 2.3rem;
-  }
-  a {
-    color: ${palette.black};
   }
   a,
   a:hover {
@@ -76,11 +71,9 @@ export default css`
 
     &-thumb {
       border-radius: 4px;
-      background: ${palette.gray400};
       cursor: pointer;
 
       &:hover {
-        background: ${palette.gray400};
       }
     }
   }
@@ -92,13 +85,6 @@ export default css`
   textarea:-webkit-autofill:hover,
   select:-webkit-autofill,
   select:-webkit-autofill:hover {
-    -webkit-text-fill-color: ${palette.gray100};
     transition: background-color 5000s ease-in-out 0s;
-  }
-
-  input:-webkit-autofill:focus,
-  textarea:-webkit-autofill:focus,
-  select:-webkit-autofill:focus {
-    -webkit-text-fill-color: ${palette.white};
   }
 `;

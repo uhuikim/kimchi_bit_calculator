@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-const Price = () => {
+const useGetUpbitPrice = () => {
   const [tickers, setTickers] = useState({});
   const scRef = useRef(null);
 
@@ -66,7 +66,7 @@ const Price = () => {
     };
   }, []);
 
-  return <div>업비트 가격 : {tickers['KRW-BTC']?.tradePrice}</div>;
+  return tickers;
 };
 
-export default Price;
+export default useGetUpbitPrice;
