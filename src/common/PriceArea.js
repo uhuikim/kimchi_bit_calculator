@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import styled from '@emotion/styled';
@@ -12,7 +12,7 @@ const PriceArea = () => {
   const { data: dollar, isLoading } = useQuery('usd', () => axios.get('https://coinat.herokuapp.com/currency'), {
     refetchInterval: 3600000,
   });
-  const kimchi = ((upbitPrice - dollar.data.rate * binancePrice) / (dollar.data.rate * binancePrice)) * 100;
+  const kimchi = ((upbitPrice - dollar?.data?.rate * binancePrice) / (dollar?.data?.rate * binancePrice)) * 100;
 
   const comma = (num) => {
     return num?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
