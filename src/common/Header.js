@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 const Header = () => {
   return (
     <Wrapped>
-      <Title>계산기</Title>
+      <Title>비트코인 계산기</Title>
     </Wrapped>
   );
 };
