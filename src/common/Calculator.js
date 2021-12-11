@@ -6,6 +6,7 @@ import comma from 'lib/comma';
 const Calculator = () => {
   const [value, setValue] = useState('');
   const [result, setResult] = useState('');
+  const [fixedKimchi, setFixedKimchi] = useState('');
 
   const { dollar, kimchi } = useSelector((state) => ({
     dollar: state.dollar.dollar,
@@ -16,6 +17,7 @@ const Calculator = () => {
     setValue(e.target.value);
     const resultWon = e.target.value * 1000 * dollar;
     setResult(resultWon + resultWon * kimchi * 0.01);
+    setFixedKimchi(kimchi);
   };
 
   return (
@@ -28,7 +30,7 @@ const Calculator = () => {
       {value && (
         <>
           <Procedure>
-            ( {value} X 1,000 X {dollar.toFixed(2)} ) + ( {comma(result.toFixed(2))} X {kimchi.toFixed(2)} X 0.01)
+            ( {value} X 1,000 X {dollar.toFixed(2)} ) + ( {comma(result.toFixed(2))} X {fixedKimchi.toFixed(2)} X 0.01)
           </Procedure>
           <Result>
             <div> = ₩ {comma(result.toFixed(2))}</div>
