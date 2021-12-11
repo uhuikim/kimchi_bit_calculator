@@ -2,6 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import styled from '@emotion/styled';
+import { dollarToWon, setKimchiPre } from 'ducks/dollar';
+import { useDispatch } from 'react-redux';
+import comma from 'lib/comma';
 
 import { useGetUpbitPrice, useGetBinancePrice } from 'hooks';
 
@@ -9,14 +12,16 @@ const PriceArea = () => {
   const upbitPrice = useGetUpbitPrice()['KRW-BTC']?.tradePrice;
   const binancePrice = useGetBinancePrice()['BTCU']?.tradePrice;
 
+  const dispatch = useDispatch();
+
   const { data: dollar, isLoading } = useQuery('usd', () => axios.get('https://coinat.herokuapp.com/currency'), {
     refetchInterval: 3600000,
+    cacheTime: 1000 * 60 * 60,
   });
-  const kimchi = ((upbitPrice - dollar?.data?.rate * binancePrice) / (dollar?.data?.rate * binancePrice)) * 100;
+  dispatch(dollarToWon(dollar?.data?.rate));
 
-  const comma = (num) => {
-    return num?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
+  const kimchi = ((upbitPrice - dollar?.data?.rate * binancePrice) / (dollar?.data?.rate * binancePrice)) * 100;
+  dispatch(setKimchiPre(kimchi));
 
   return (
     <Wrapped>
@@ -28,15 +33,17 @@ const PriceArea = () => {
           />
         </ImgBox>
         ₩ {comma(upbitPrice)}
+        <Convert>( $ {comma((upbitPrice / dollar?.data?.rate).toFixed(2))} )</Convert>
       </Card>
       <Card>
         <ImgBox width="105px">
           <img src="https://res.cloudinary.com/dccey8yhf/image/upload/v1639104591/binance_p8mqux.svg" alt="바이낸스" />
         </ImgBox>
         $ {comma(binancePrice)}
+        <Convert>( ₩ {comma((binancePrice * dollar?.data?.rate).toFixed(2))} )</Convert>
       </Card>
       <Card>
-        <p>오늘의 환율</p>
+        <p>환율</p>
         {dollar?.data?.rate.toFixed(2)}
       </Card>
       <Card>
@@ -70,4 +77,10 @@ const ImgBox = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 0.5rem;
+`;
+
+const Convert = styled.p`
+  font-size: 0.9rem;
+  color: gray;
+  font-weight: 400;
 `;
