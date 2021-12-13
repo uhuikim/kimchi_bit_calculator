@@ -57,7 +57,7 @@ const PriceArea = () => {
           <Loading />
         ) : (
           <>
-            ₩ {comma(binancePrice['BTCU']?.tradePrice)}
+            $ {comma(binancePrice['BTCU']?.tradePrice)}
             <Convert> ( $ {comma((binancePrice['BTCU']?.tradePrice * dollar?.data?.rate).toFixed(2))} )</Convert>
           </>
         )}
