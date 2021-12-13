@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 const useGetUpbitPrice = () => {
   const [tickers, setTickers] = useState({});
+  const [isLoading, setIsLoading] = useState();
   const scRef = useRef(null);
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const useGetUpbitPrice = () => {
           scRef.current.send(JSON.stringify(data));
         }
       };
+      setIsLoading(true);
 
       scRef.current.onmessage = (e) => {
         const enc = new TextDecoder('utf-8');
@@ -48,6 +50,7 @@ const useGetUpbitPrice = () => {
               symbol,
             },
           };
+          setIsLoading(false);
           return ticker;
         });
       };
@@ -66,7 +69,7 @@ const useGetUpbitPrice = () => {
     };
   }, []);
 
-  return tickers;
+  return [tickers, isLoading];
 };
 
 export default useGetUpbitPrice;

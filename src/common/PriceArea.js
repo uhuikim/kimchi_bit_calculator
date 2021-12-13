@@ -5,22 +5,30 @@ import styled from '@emotion/styled';
 import { dollarToWon, setKimchiPre } from 'ducks/dollar';
 import { useDispatch } from 'react-redux';
 import comma from 'lib/comma';
+import Loading from './Loading';
 
 import { useGetUpbitPrice, useGetBinancePrice } from 'hooks';
 
 const PriceArea = () => {
-  const upbitPrice = useGetUpbitPrice()['KRW-BTC']?.tradePrice;
-  const binancePrice = useGetBinancePrice()['BTCU']?.tradePrice;
+  const [upbitPrice, upbitLoading] = useGetUpbitPrice();
+  const [binancePrice, binanceLoading] = useGetBinancePrice();
 
   const dispatch = useDispatch();
 
-  const { data: dollar, isLoading } = useQuery('usd', () => axios.get('https://coinat.herokuapp.com/currency'), {
-    refetchInterval: 3600000,
-    cacheTime: 1000 * 60 * 60,
-  });
+  const { data: dollar, isLoading: dollarLoading } = useQuery(
+    'usd',
+    () => axios.get('https://coinat.herokuapp.com/currency'),
+    {
+      refetchInterval: 3600000,
+      cacheTime: 1000 * 60 * 60,
+    },
+  );
   dispatch(dollarToWon(dollar?.data?.rate));
 
-  const kimchi = ((upbitPrice - dollar?.data?.rate * binancePrice) / (dollar?.data?.rate * binancePrice)) * 100;
+  const kimchi =
+    ((upbitPrice['KRW-BTC']?.tradePrice - dollar?.data?.rate * binancePrice['BTCU']?.tradePrice) /
+      (dollar?.data?.rate * binancePrice['BTCU']?.tradePrice)) *
+    100;
   dispatch(setKimchiPre(kimchi));
 
   return (
@@ -32,23 +40,35 @@ const PriceArea = () => {
             alt="업비트 아이콘"
           />
         </ImgBox>
-        ₩ {comma(upbitPrice)}
-        <Convert>( $ {comma((upbitPrice / dollar?.data?.rate).toFixed(2))} )</Convert>
+        {upbitLoading || dollarLoading ? (
+          <Loading />
+        ) : (
+          <>
+            ₩ {comma(upbitPrice['KRW-BTC']?.tradePrice)}
+            <Convert> ( $ {comma((upbitPrice['KRW-BTC']?.tradePrice / dollar?.data?.rate).toFixed(2))} )</Convert>
+          </>
+        )}
       </Card>
       <Card>
         <ImgBox width="105px">
           <img src="https://res.cloudinary.com/dccey8yhf/image/upload/v1639104591/binance_p8mqux.svg" alt="바이낸스" />
         </ImgBox>
-        $ {comma(binancePrice)}
-        <Convert>( ₩ {comma((binancePrice * dollar?.data?.rate).toFixed(2))} )</Convert>
+        {binanceLoading || dollarLoading ? (
+          <Loading />
+        ) : (
+          <>
+            ₩ {comma(binancePrice['BTCU']?.tradePrice)}
+            <Convert> ( $ {comma((binancePrice['BTCU']?.tradePrice * dollar?.data?.rate).toFixed(2))} )</Convert>
+          </>
+        )}
       </Card>
       <Card>
         <p>환율</p>
-        {dollar?.data?.rate.toFixed(2)}
+        {dollarLoading ? <Loading /> : <>{dollar?.data?.rate.toFixed(2)}</>}
       </Card>
       <Card>
         <p>김프</p>
-        {kimchi.toFixed(2)} %
+        {upbitLoading || binanceLoading || dollarLoading ? <Loading /> : <> {kimchi.toFixed(2)} %</>}
       </Card>
     </Wrapped>
   );

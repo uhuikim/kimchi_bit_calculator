@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 const useGetBinancePrice = () => {
   const [tickers, setTickers] = useState({});
+  const [isLoading, setIsLoading] = useState('');
   const scRef = useRef(null);
 
   useEffect(() => {
@@ -12,7 +13,7 @@ const useGetBinancePrice = () => {
           console.log('b connected');
         }
       };
-
+      setIsLoading(true);
       // USDT
       scRef.current.onmessage = (e) => {
         if (scRef.current.readyState === 1) {
@@ -33,6 +34,8 @@ const useGetBinancePrice = () => {
                 symbol,
               },
             };
+
+            setIsLoading(false);
             return ticker;
           });
         }
@@ -52,7 +55,7 @@ const useGetBinancePrice = () => {
     };
   }, []);
 
-  return tickers;
+  return [tickers, isLoading];
 };
 
 export default useGetBinancePrice;
