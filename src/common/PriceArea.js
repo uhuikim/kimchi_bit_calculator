@@ -58,7 +58,7 @@ const PriceArea = () => {
         ) : (
           <>
             $ {comma(binancePrice['BTCU']?.tradePrice)}
-            <Convert> ( $ {comma((binancePrice['BTCU']?.tradePrice * dollar?.data?.rate).toFixed(2))} )</Convert>
+            <Convert> ( ₩ {comma((binancePrice['BTCU']?.tradePrice * dollar?.data?.rate).toFixed(2))} )</Convert>
           </>
         )}
       </Card>
@@ -78,11 +78,13 @@ export default PriceArea;
 
 const Wrapped = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const Card = styled.div`
   border: 1px solid gray;
-  width: 25%;
+  width: 240px;
   margin-right: -1px;
   padding: 1rem;
   font-size: 1.3rem;

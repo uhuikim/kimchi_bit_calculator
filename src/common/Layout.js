@@ -20,6 +20,6 @@ const Layout = ({ children }) => {
 export default Layout;
 
 const Wrapped = styled.div`
-  width: 960px;
+  max-width: 960px;
   margin: 0 auto;
 `;

@@ -90,4 +90,8 @@ const Result = styled.div`
   margin-top: 1.1rem;
   font-weight: bold;
   font-size: 3rem;
+
+  @media (max-width: 550px) {
+    font-size: 2rem;
+  }
 `;
